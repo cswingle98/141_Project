@@ -4,9 +4,11 @@ import tqdm
 import cv2
 
 
-def main(pic_dir, save_dir):
+def main(pic_dir, save_dir, rate):
     video_name = 'annotated.avi'
     if save_dir:
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
         video_path = os.path.join(save_dir, video_name)
     else:
         video_path = video_name
@@ -17,8 +19,7 @@ def main(pic_dir, save_dir):
     images = sorted(images, key=lambda x: int(x.split('.')[0]))
     frame = cv2.imread(os.path.join(pic_dir, images[0]))
     height, width, layers = frame.shape
-
-    video = cv2.VideoWriter(video_path, 0, 5, (width, height))
+    video = cv2.VideoWriter(video_path, 0, rate, (width, height))
 
     for img in tqdm.tqdm(images):
         video.write(cv2.imread(os.path.join(pic_dir, img)))
@@ -36,6 +37,6 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--save', default=None,
                         help='Save path. Defaults to current path')
     args = parser.parse_args()
-    pic_dir, save_dir = args.dir, args.save
+    pic_dir, save_dir, rate = args.dir, args.save, args.rate
 
-    main(pic_dir, save_dir)
+    main(pic_dir, save_dir, args.rate)
