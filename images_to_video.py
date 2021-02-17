@@ -13,7 +13,9 @@ def main(pic_dir, save_dir, rate):
     else:
         video_path = video_name
 
-    images = [img for img in os.listdir(pic_dir) if img.endswith(".png") or img.endswith('.jpg')]
+    images = [img for img in os.listdir(pic_dir) if
+              img.endswith(".png")
+              or img.endswith('.jpg')]
 
     # sort images to appear in list in order they were taken
     images = sorted(images, key=lambda x: int(x.split('.')[0]))
